@@ -1,0 +1,108 @@
+---
+title: "MidIS240ProbStatLab_JurgenLoa_00000055240"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Nomor 1
+```{r cars}
+install.packages("readxl")
+library(readxl)
+
+aaa <- read_excel ("DataJurgen.xlsx", sheet = "Sheet1")
+
+
+
+```
+
+```{r pressure, echo=FALSE}
+##Shapiro Wilk Test
+shapiro.test(aaa$UangKeluar)
+shapiro.test(aaa$TahunKelahiran)
+shapiro.test(aaa$WaktuMenggunakanDalamSatuminggu)
+qqnorm(aaa$UangKeluar, main="Uang Keluar")
+qqline(aaa$UangKeluar)
+qqnorm(aaa$TahunKelahiran, main="Tahun Kelahiran")
+qqline(aaa$TahunKelahiran)
+qqnorm(aaa$WaktuMenggunakanDalamSatuminggu, main="Waktu Menggunakan Dalam Satu Minggu")
+qqline(aaa$WaktuMenggunakanDalamSatuminggu)
+qqnorm(aaa$`LamaTelahMenggunakanPlatform(bulan)`,main="Lama Telah Menggunakan Platform")
+qqline(aaa$`LamaTelahMenggunakanPlatform(bulan)`)
+
+
+#a-----------
+install.packages("car")
+library(car)
+library(readxl)
+install.packages("datarium")
+library(datarium)
+
+
+#b-------------
+apply(aaa, 2, mean, na.rm=TRUE)
+
+
+#c------------
+apply(stream,2, shapiro.test)
+apply(stream,2,var)
+cv <- function(x) {
+  cv <- sd(x)/mean(x)
+  return (cv)
+}
+apply(stream, 2, cv)
+
+#d------------
+leveneTest(stream$UangKeluar, stream$TahunKelahiran, center=mean)
+
+
+s.stream <- stack(stream)
+hasil <- aov(s.stream$values ~ s.stream$ind)
+summary(hasil)
+
+
+#e---------------
+
+chisq.test(aaa$UangKeluar, aaa$`LamaTelahMenggunakanPlatform(bulan)`)
+chisq.test(aaa$TahunKelahiran, aaa$UangKeluar)
+chisq.test(aaa$TahunKelahiran, aaa$WaktuMenggunakanDalamSatuminggu)
+chisq.test(aaa$UangKeluar, aaa$WaktuMenggunakanDalamSatuminggu)
+
+#f-------------------
+wilcox.test(aaa$WaktuMenggunakanDalamSatuminggu, aaa$`LamaTelahMenggunakanPlatform(bulan)`)
+```
+
+##Nomor 2
+```{r pressure, echo=FALSE}
+## A
+cor(onsite$ipsms1, onsite$ipsms2)
+cor(onsite$ipsms1, onsite$ipsms3)
+cor(onsite$ipsms2, onsite$ipsms3)
+
+## B & C
+par(mfrow=c(1,3))
+plot(onsite$ipsms1,onsite$ipsms2, main = "JurgenLoa 00000055240")
+plot(onsite$ipsms1,onsite$ipsms3, main = "JurgenLoa 00000055240")
+plot(onsite$ipsms2,onsite$ipsms3, col="green", main = "JurgenLoa 00000055240")
+```
+
+## Nomor 3
+```{r pressure, echo=FALSE}
+##A
+shapiro.test(onsite$ipsms1)
+shapiro.test(onsite$ipsms2)
+shapiro.test(onsite$ipsms3)
+## Jika berada p-value diatas 0.05 maka Normal Distribution. IPSMS1  adalah normal distribution karena P-value nya berada diatas 0.05. IPSMS3 & IPSMS2 tidak normal karena berada dibawah 0.05.
+
+## B & C
+hist(onsite$ipsms1, col="green", main='Histogram Data ipsms1 JurgenLoa 00000055240', xlim = c(0, 5))
+hist(onsite$ipsms2, main='Histogram Data ipsms2 JurgenLoa 00000055240', xlim = c(0, 5))
+hist(onsite$ipsms3, main='Histogram Data ipsms3 JurgenLoa 00000055240', xlim = c(0, 5))
+```
